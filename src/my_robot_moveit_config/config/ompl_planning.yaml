@@ -1,0 +1,30 @@
+move_group:
+  ros__parameters:
+    planning_plugin: ompl_interface/OMPLPlanner
+    # 关键修复：确保包含 AddTimeOptimalParameterization
+    request_adapters: >-
+      default_planner_request_adapters/AddTimeOptimalParameterization
+      default_planner_request_adapters/FixWorkspaceBounds
+      default_planner_request_adapters/FixEntryPointBounds
+      default_planner_request_adapters/FixStartStateBounds
+      default_planner_request_adapters/FixStartStateCollision
+      default_planner_request_adapters/FixStartStatePathConstraints
+      default_planner_request_adapters/FixReplanStudies
+    
+    start_state_max_bounds_error: 0.1
+    
+    planning_pipelines:
+      - ompl
+    
+    ompl:
+      plan_request_params:
+        planning_attempts: 1
+        planning_pipeline: ompl
+        max_velocity_scaling_factor: 1.0
+        max_acceleration_scaling_factor: 1.0
+      
+      # 具体的算法配置
+      arm: # 这里的名字必须和你 SRDF 里的 group 名字一致
+        planner_configs:
+          - RRTConnectkConfigDefault
+        enforce_constrained_state_space: true

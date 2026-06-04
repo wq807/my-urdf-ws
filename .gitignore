@@ -1,0 +1,7 @@
+# ROS2 ignored files
+build/
+install/
+log/
+.vscode/
+__pycache__/
+*.pyc
