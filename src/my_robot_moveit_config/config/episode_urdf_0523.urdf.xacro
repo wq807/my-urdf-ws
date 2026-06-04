@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="episode_urdf_0523">
     <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <xacro:arg name="sim_backend" default="gazebo" />
 
     <!-- Import episode_urdf_0523 urdf file -->
     <xacro:include filename="$(find my_robot_moveit_config)/urdf/arm.urdf" />
@@ -8,7 +9,13 @@
     <!-- Import control_xacro -->
     <xacro:include filename="episode_urdf_0523.ros2_control.xacro" />
 
+    <!-- Import gripper xacro -->
+    <xacro:include filename="$(find my_robot_moveit_config)/urdf/gripper.xacro" />
 
-    <xacro:episode_urdf_0523_ros2_control name="GazeboSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    <xacro:episode_urdf_0523_ros2_control name="GazeboSystem" initial_positions_file="$(arg initial_positions_file)" sim_backend="$(arg sim_backend)"/>
+
+    <!-- 挂载平行夹爪到 L6 末端，单侧行程 47.5mm → 总开合 95mm -->
+    <xacro:parallel_gripper parent_link="L6" stroke="0.0475"/>
+    <xacro:gripper_transmissions/>
 
 </robot>

@@ -1,6 +1,8 @@
+planning_plugin: ompl_interface/OMPLPlanner
 move_group:
   ros__parameters:
     planning_plugin: ompl_interface/OMPLPlanner
+    default_planning_pipeline: ompl
     # 关键修复：确保包含 AddTimeOptimalParameterization
     request_adapters: >-
       default_planner_request_adapters/AddTimeOptimalParameterization

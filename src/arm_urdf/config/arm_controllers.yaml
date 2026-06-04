@@ -3,10 +3,10 @@ controller_manager:
     update_rate: 100  # Hz
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-    joint_trajectory_controller:
+    robot_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
-joint_trajectory_controller:
+robot_controller:
   ros__parameters:
     joints:
       - J1
@@ -15,6 +15,8 @@ joint_trajectory_controller:
       - J4
       - J5
       - J6
+      - gripper_left_joint
+      - gripper_right_joint
     command_interfaces:
       - position
     state_interfaces:

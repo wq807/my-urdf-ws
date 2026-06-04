@@ -1,12 +1,23 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="episode_urdf_0523_ros2_control" params="name initial_positions_file">
+    <xacro:macro name="episode_urdf_0523_ros2_control" params="name initial_positions_file sim_backend:=gazebo">
 
         <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
 
+        <!-- 根据 sim_backend 选择硬件插件: gazebo → GazeboSystem, mock → GenericSystem -->
+        <xacro:if value="${sim_backend == 'gazebo'}">
+            <xacro:property name="hw_plugin" value="gazebo_ros2_control/GazeboSystem"/>
+        </xacro:if>
+        <xacro:if value="${sim_backend == 'mock'}">
+            <xacro:property name="hw_plugin" value="mock_components/GenericSystem"/>
+        </xacro:if>
+        <xacro:if value="${sim_backend != 'gazebo' and sim_backend != 'mock'}">
+            <xacro:property name="hw_plugin" value="mock_components/GenericSystem"/>
+        </xacro:if>
+
         <ros2_control name="${name}" type="system">
             <hardware>
-                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+                <plugin>${hw_plugin}</plugin>
             </hardware>
             <joint name="J1">
                 <command_interface name="position"/>
@@ -47,6 +58,20 @@
                 <command_interface name="position"/>
                 <state_interface name="position">
                   <param name="initial_value">${initial_positions['J6']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="gripper_left_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['gripper_left_joint']}</param>
+                </state_interface>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="gripper_right_joint">
+                <command_interface name="position"/>
+                <state_interface name="position">
+                  <param name="initial_value">${initial_positions['gripper_right_joint']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>

@@ -226,7 +226,72 @@
     <limit lower="-0.5236" upper="5.3233" effort="100" velocity="1" />
   </joint>
 
-  
+  <!-- ==================== 平行夹爪（两指，直接挂L6） ==================== -->
+  <link name="gripper_left">
+    <inertial>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="2e-05" ixy="0" ixz="0" iyy="2e-05" iyz="0" izz="1e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.005 0.08" />
+      </geometry>
+      <material name="">
+        <color rgba="0.3 0.3 0.3 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.005 0.08" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_left_joint" type="prismatic">
+    <origin xyz="0.0 0.05 0.0" rpy="0 0 0" />
+    <parent link="L6" />
+    <child link="gripper_left" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0" upper="0.0475" effort="50" velocity="0.05" />
+    <dynamics damping="2.0" friction="1.0" />
+  </joint>
+
+  <link name="gripper_right">
+    <inertial>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <mass value="0.01" />
+      <inertia ixx="2e-05" ixy="0" ixz="0" iyy="2e-05" iyz="0" izz="1e-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.005 0.08" />
+      </geometry>
+      <material name="">
+        <color rgba="0.3 0.3 0.3 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.005 0 0.04" rpy="0 0 0" />
+      <geometry>
+        <box size="0.01 0.005 0.08" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_right_joint" type="prismatic">
+    <origin xyz="0.0 -0.05 0.0" rpy="0 0 0" />
+    <parent link="L6" />
+    <child link="gripper_right" />
+    <axis xyz="0 1 0" />
+    <limit lower="0" upper="0.0475" effort="50" velocity="0.05" />
+    <dynamics damping="2.0" friction="1.0" />
+    
+  </joint>
+
 
   <!-- ===================== Gazebo统一基础配置（删除重复配置） ===================== -->
   <gazebo>
@@ -258,6 +323,12 @@
   </gazebo>
   <gazebo reference="L6">
     <material>Gazebo/Grey</material>
+  </gazebo>
+  <gazebo reference="gripper_left">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="gripper_right">
+    <material>Gazebo/DarkGrey</material>
   </gazebo>
 
   <!-- ===================== 新增：6个可动关节 Transmission 配置 ===================== -->
@@ -327,20 +398,32 @@
     </actuator>
   </transmission>
 
+  <transmission name="trans_gripper_left">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="gripper_left_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_gripper_left">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="trans_gripper_right">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="gripper_right_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_gripper_right">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
   <!-- 把这里的包名改成你的实际包名 my_robot_moveit_config -->
 <gazebo>
-  <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-    <parameters>$(find my_robot_moveit_config)/config/ros2_controllers.yaml</parameters>
-  </plugin>
-</gazebo>
-
-<gazebo>
     <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-        <robot_param>robot_description</robot_param>
-        <robot_param_node>robot_state_publisher</robot_param_node>
-        <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-        </hardware>
+        <parameters>$(find my_robot_moveit_config)/config/ros2_controllers.yaml</parameters>
     </plugin>
 </gazebo>
 

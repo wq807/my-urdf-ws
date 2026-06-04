@@ -344,51 +344,6 @@
   </plugin>
 </gazebo>
 
-<ros2_control name="GazeboSystem" type="system">
-    <hardware>
-      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-    </hardware>
-    <joint name="J1">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="J2">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="J3">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="J4">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="J5">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="J6">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-  </ros2_control>
+<!-- ros2_control 由 episode_urdf_0523.ros2_control.xacro 宏统一管理
+       通过 sim_backend 参数切换 GazeboSystem / mock_components/GenericSystem -->
 </robot>

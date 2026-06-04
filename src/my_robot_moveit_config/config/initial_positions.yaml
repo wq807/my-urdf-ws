@@ -6,4 +6,5 @@ initial_positions:
   J4: 0
   J5: 0
   J6: 0
-
+  gripper_left_joint: 0.0475
+  gripper_right_joint: 0.0475

@@ -55,9 +55,9 @@ def generate_launch_description():
         output="screen"
     )
 
-    # 7. 加载机械臂轨迹控制器
-    load_arm_trajectory_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", "active", "arm_trajectory_controller"],
+    # 7. 加载统一机器人控制器（包含全部8个关节）
+    load_robot_controller = ExecuteProcess(
+        cmd=["ros2", "control", "load_controller", "--set-state", "active", "robot_controller"],
         output="screen"
     )
 
@@ -72,7 +72,7 @@ def generate_launch_description():
     event_load_trajectory = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=load_joint_state_broadcaster,
-            on_exit=[load_arm_trajectory_controller],
+            on_exit=[load_robot_controller],
         )
     )
 

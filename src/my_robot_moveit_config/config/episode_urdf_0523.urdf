@@ -307,9 +307,9 @@
 
   <gazebo>
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-      <parameters>$(find my_robot_moveit_config)/config/ros2_controllers.yaml</parameters>
+        <parameters>$(find my_robot_moveit_config)/config/ros2_controllers.yaml</parameters>
     </plugin>
-  </gazebo>
+</gazebo>
 
   <gazebo reference="base_link">
     <self_collide>true</self_collide>
@@ -364,5 +364,21 @@
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
-  </ros2_control>
+
+    <joint name="gripper_left_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0475</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+    
+    <joint name="gripper_right_joint">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0475</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+</ros2_control>
 </robot>

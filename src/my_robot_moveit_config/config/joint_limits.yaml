@@ -32,3 +32,13 @@ move_group:
         max_velocity: 1.0
         has_acceleration_limits: true
         max_acceleration: 2.0
+      gripper_left_joint:
+        has_velocity_limits: true
+        max_velocity: 0.05
+        has_acceleration_limits: true
+        max_acceleration: 0.5
+      gripper_right_joint:
+        has_velocity_limits: true
+        max_velocity: 0.05
+        has_acceleration_limits: true
+        max_acceleration: 0.5

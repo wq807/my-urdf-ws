@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    平行夹爪 — 纯几何体，两个细长手指直接挂载到机械臂末端
+    - 无底座，手指直接用 prismatic joint 挂 L6
+    - 单侧行程 47.5mm → 总开合 95mm
+    - 手指: 80mm长 × 5mm薄 × 60mm高
+    - 紧贴 L6，零间隙
+  -->
+  <xacro:macro name="parallel_gripper" params="parent_link stroke:=0.0475 prefix:=''">
+
+    <!-- ================================================================ -->
+    <!-- 左手指 — 细长 box，沿 -Y 向中心滑动                              -->
+    <!-- 手指中心位于 Y=+50mm 处 (stroke=0时), 内侧面在 Y=+47.5mm          -->
+    <!-- ================================================================ -->
+    <link name="${prefix}gripper_left">
+      <inertial>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="2e-05" ixy="0" ixz="0" iyy="2e-05" iyz="0" izz="1e-05"/>
+      </inertial>
+      <visual>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.005 0.08"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.005 0.08"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}gripper_left_joint" type="prismatic">
+      <origin xyz="0.0 0.05 0.0" rpy="0 0 0"/>
+      <parent link="${parent_link}"/>
+      <child link="${prefix}gripper_left"/>
+      <axis xyz="0 -1 0"/>
+      <limit lower="0" upper="${stroke}" effort="50" velocity="0.05"/>
+      <dynamics damping="2.0" friction="1.0"/>
+    </joint>
+
+    <!-- ================================================================ -->
+    <!-- 右手指 — 细长 box，沿 +Y 向中心滑动，独立控制（无 mimic）     -->
+    <!-- ================================================================ -->
+    <link name="${prefix}gripper_right">
+      <inertial>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="2e-05" ixy="0" ixz="0" iyy="2e-05" iyz="0" izz="1e-05"/>
+      </inertial>
+      <visual>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.005 0.08"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.3 0.3 0.3 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.005 0 0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.01 0.005 0.08"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}gripper_right_joint" type="prismatic">
+      <origin xyz="0.0 -0.05 0.0" rpy="0 0 0"/>
+      <parent link="${parent_link}"/>
+      <child link="${prefix}gripper_right"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="0" upper="${stroke}" effort="50" velocity="0.05"/>
+      <dynamics damping="2.0" friction="1.0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:macro name="gripper_transmissions" params="prefix:=''">
+    <transmission name="${prefix}trans_gripper_left">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}gripper_left_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}motor_gripper_left">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}trans_gripper_right">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}gripper_right_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}motor_gripper_right">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
+</robot>
