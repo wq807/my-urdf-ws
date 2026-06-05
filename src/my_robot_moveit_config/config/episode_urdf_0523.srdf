@@ -6,9 +6,7 @@
 
     <group name="gripper">
         <link name="gripper_left"/>
-        <link name="gripper_right"/>
         <joint name="gripper_left_joint"/>
-        <joint name="gripper_right_joint"/>
     </group>
 
     <group name="arm_with_gripper">
@@ -33,18 +31,17 @@
         <joint name="J5" value="0"/>
         <joint name="J6" value="0"/>
         <joint name="gripper_left_joint" value="0.0475"/>
-        <joint name="gripper_right_joint" value="0.0475"/>
     </group_state>
 
     <group_state name="open" group="gripper">
         <joint name="gripper_left_joint" value="0.0475"/>
-        <joint name="gripper_right_joint" value="0.0475"/>
     </group_state>
-    
+
     <group_state name="closed" group="gripper">
         <joint name="gripper_left_joint" value="0"/>
-        <joint name="gripper_right_joint" value="0"/>
     </group_state>
+
+    <passive_joint name="gripper_right_joint"/>
 
     <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>
 

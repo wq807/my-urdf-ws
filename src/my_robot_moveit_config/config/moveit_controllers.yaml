@@ -16,4 +16,3 @@ moveit_simple_controller_manager:
       - J5
       - J6
       - gripper_left_joint
-      - gripper_right_joint

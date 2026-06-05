@@ -47,7 +47,7 @@
     </joint>
 
     <!-- ================================================================ -->
-    <!-- 右手指 — 细长 box，沿 +Y 向中心滑动，独立控制（无 mimic）     -->
+    <!-- 右手指 — 细长 box，沿 +Y 向中心滑动，被动跟随左手指 (mimic) -->
     <!-- ================================================================ -->
     <link name="${prefix}gripper_right">
       <inertial>
@@ -71,6 +71,13 @@
         </geometry>
       </collision>
     </link>
+  <link name="mimic_dummy_link"/>
+    <joint name="gripper_right_joint_mimic" type="revolute">
+      <parent link="base_link"/>
+      <child link="mimic_dummy_link"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-3.14" upper="3.14" effort="0" velocity="0"/>
+  </joint>
 
     <joint name="${prefix}gripper_right_joint" type="prismatic">
       <origin xyz="0.0 -0.05 0.0" rpy="0 0 0"/>
@@ -79,6 +86,7 @@
       <axis xyz="0 1 0"/>
       <limit lower="0" upper="${stroke}" effort="50" velocity="0.05"/>
       <dynamics damping="2.0" friction="1.0"/>
+      <mimic joint="${prefix}gripper_left_joint" multiplier="1" offset="0"/>
     </joint>
 
   </xacro:macro>
@@ -90,16 +98,6 @@
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
       <actuator name="${prefix}motor_gripper_left">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-    <transmission name="${prefix}trans_gripper_right">
-      <type>transmission_interface/SimpleTransmission</type>
-      <joint name="${prefix}gripper_right_joint">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="${prefix}motor_gripper_right">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         <mechanicalReduction>1</mechanicalReduction>
       </actuator>

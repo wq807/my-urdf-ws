@@ -289,7 +289,7 @@
     <axis xyz="0 1 0" />
     <limit lower="0" upper="0.0475" effort="50" velocity="0.05" />
     <dynamics damping="2.0" friction="1.0" />
-    
+    <mimic joint="gripper_left_joint" multiplier="1" offset="0" />
   </joint>
 
 
@@ -409,16 +409,6 @@
     </actuator>
   </transmission>
 
-  <transmission name="trans_gripper_right">
-    <type>transmission_interface/SimpleTransmission</type>
-    <joint name="gripper_right_joint">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
-    <actuator name="motor_gripper_right">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
 
   <!-- 把这里的包名改成你的实际包名 my_robot_moveit_config -->
 <gazebo>
